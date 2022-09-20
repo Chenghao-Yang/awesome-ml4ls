@@ -1,0 +1,73 @@
+# Copyright (c) 2019, SCALE Lab, Brown University
+# All rights reserved.
+
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree. 
+
+# ======================================================================
+# This file holds parameters for running a DRiLLS agent for training and
+# inference. It sets up the RL environment along with the logic synthesis
+# environment to train the RL agent. 
+
+# change this to the abc binary path if the command is not recognized system-wide
+abc_binary: yosys-abc
+yosys_binary: yosys
+
+# path of the design file in one of the accepted formats by ABC
+design_file: /home/yangch/EPFL-benchmarks/random_control/ctrl.aig
+
+# standard cell library mapping
+mapping:
+  clock_period: 200 # in pico seconds
+  library_file: asap7.lib
+  initial: 2020
+
+# FPGA mapping - exlusive with the above
+fpga_mapping:
+  #levels: 80
+  lut_inputs: 6
+  levels: 4
+
+# add more optimization to the toolbox
+optimizations:
+  - rewrite
+  - rewrite -z
+  - refactor
+  - refactor -z
+  #- resub
+  #- resub -z
+  - balance
+  #- renode
+  #- resub -K 8
+  #- dc2
+  #- ifraig
+  #- dch -f
+  #- renode -K 8
+  #- if -g
+  #- dc2 -b
+  #- rewrite -z -l; balance -l;
+  #- dch; balance -l;
+  #- dc2;
+  #- resub -K 8 -l; refactor -z -l; resub -K 8 -N 2 -l;
+  #- resub -K 10 -l; refactor -z -l; resub -K 10 -N 2 -l;
+  #- resub -K 12 -l; refactor -z -l; resub -K 12 -N 2 -l;
+
+
+# the directory to hold the playground an agent uses to practice
+playground_dir: playground/test/ctrl3
+# agent training parameters
+episodes: 20000
+iterations: 20
+model_dir:  /home/yangch/LSTM_PPO_pytorch/save/ctrl/LSTM/agent_LSTM3.pth   # must be absolute path
+actor_model_dir:  /home/yangch/LSTM_PPO_pytorch/save/ctrl/actor/actor.pth   # must be absolute path
+critic_model_dir: /home/yangch/LSTM_PPO_pytorch/save/ctrl/critic/critic.pth
+
+resyn2: 950
+resyn2_delay: 218
+
+EPFL_LUT: 151
+
+EPFL_level: 4
+
+
+  
